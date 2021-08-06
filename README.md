@@ -19,9 +19,8 @@ talk to the script like described in snmpd.conf.
 # Performance
 
 This script has seen multiple iterations which differ a great deal
-performance-vise. All tests were conducted on a fairly low power Ubuntu 18.04
-or 20.04 VMs:
+performance-vise. All tests were conducted on a fairly low power Ubuntu 18.04 VM:
 
 * Original "pass" script was launched once per OID by snmpd. Querying all units (180) took about 10 seconds. 
 * First iteration of "pass_persist" script ran "systemctl is-active" for detected (180) units. Querying all units took about 1.6 seconds.
-* Second (current) iteration of "pass_persist" script that gets all the data using one systemctl command. Querying all (62) services took about 0.25 seconds.  
+* Second (current) iteration of "pass_persist" script that gets all the data using one systemctl command. Querying all (61) services took about 0.15 seconds.
