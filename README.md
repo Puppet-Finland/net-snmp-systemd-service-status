@@ -16,6 +16,20 @@ follows:
 This script can be used interactively as well. No parameters are needed, just
 talk to the script like described in snmpd.conf.
 
+# Configuration
+
+Clone the repository, then add a line such as this to snmpd.conf:
+
+    pass_persist .1.3.9950.1 /etc/snmp/net-snmp-systemd-service-status/systemd-service-status.py
+
+After restarting snmpd you should be able to query or walk through systemd service status with
+
+    snmpwalk -On -v 3 -u user -l authPriv -a sha -A pass -x AES -X pass localhost .1.3.9950.1
+
+or
+
+    snmpwalk -On -v2c -c public localhost .1.3.9950.1
+
 # Performance
 
 This script has seen multiple iterations which differ a great deal
