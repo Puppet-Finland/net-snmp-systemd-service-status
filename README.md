@@ -4,7 +4,7 @@ This is a snmpd (Net-SNMP) "pass_persist" extension script that generates "is
 service up" data for all detected systemd services. On a high level it works as
 follows:
 
-1. Uses a private OID subtree as a prefix for all OIDs
+1. Uses a private OID subtree ("1.3.9950.1") as a prefix for all OIDs
 1. Lists systemd service unit files on the system
 1. Filters out services that can have multiple instances ("@.service")
 1. Gets the numeric return value of systemctl is-active for each service
