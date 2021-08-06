@@ -35,18 +35,28 @@ class SystemdServiceStatus:
         # Temporary data structure used to create sorted oid list later
         oids = [self.oid_prefix]
 
-        lines = subprocess.check_output(["/bin/systemctl", "list-unit-files", "-t", "service", "--no-legend"]).decode("UTF-8").split("\n")
+        lines = subprocess.check_output(["/bin/systemctl", "list-units", "-t", "service", "--no-legend"]).decode("UTF-8").split("\n")
 
         for line in lines:
             # Filter out systemd services that are service instance "templates" and
             # not real services, e.g. openvpn@.service.
             if line and not "@." in line:
-               service_name = re.sub(r'\.service\s+\w+\s*$', '', line) 
+               # This pattern will get the service name and current status. The test string will be something like
+               #
+               # accounts-daemon.service            loaded active running Accounts Service
+               #
+               # Regular expression can be easily tested online, e.g. here: https://pythex.org
+               #
+               result = re.search(r"^(.+)\.service\s+\w+\s+\w+\s+(\w+)\s+.*$", line)
+               service_name = result.group(1)
+               service_status = result.group(2)
+
+               if service_status == 'running':
+                   service_status = 0
+               else:
+                   service_status = 1
+
                service_oid = self.create_oid(service_name)
-               try:
-                   service_status = subprocess.check_call(["/bin/systemctl", "is-active", service_name], stdin=subprocess.DEVNULL, stdout=subprocess.DEVNULL)
-               except subprocess.CalledProcessError as cpe:
-                   service_status = cpe.returncode
 
                self.data[service_oid] = ('integer', service_status, service_name)
                oids.append(service_oid)
