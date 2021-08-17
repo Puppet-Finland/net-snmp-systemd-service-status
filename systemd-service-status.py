@@ -35,7 +35,7 @@ class SystemdServiceStatus:
         # Temporary data structure used to create sorted oid list later
         oids = [self.oid_prefix]
 
-        lines = subprocess.check_output(["/bin/systemctl", "list-units", "-t", "service", "--no-legend"]).decode("UTF-8").split("\n")
+        lines = subprocess.check_output(["/bin/systemctl", "list-units", "-a", "-t", "service", "--no-legend"]).decode("UTF-8").split("\n")
 
         for line in lines:
             # Filter out systemd services that are service instance "templates" and
