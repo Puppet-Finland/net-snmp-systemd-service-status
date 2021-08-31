@@ -47,7 +47,7 @@ class SystemdServiceStatus:
                #
                # Regular expression can be easily tested online, e.g. here: https://pythex.org
                #
-               result = re.search(r"^(.+)\.service\s+(\w|-)+\s+\w+\s+(\w+)\s+.*$", line)
+               result = re.search(r"^(.+)\.service\s+[\w|-]+\s+\w+\s+(\w+)\s+.*$", line)
                service_name = result.group(1)
                service_status = result.group(2)
 
