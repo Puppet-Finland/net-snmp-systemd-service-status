@@ -98,6 +98,8 @@ def main():
         while True:
             command = getline()
 
+            # It seems that snmpd never outputs an empty line, so this is
+            # redundant.
             if command == "":
                 sys.exit(0)
 
@@ -115,17 +117,22 @@ def main():
                 output(str(oid))
                 output(str(s.data[oid.lstrip(".")][0]))
                 output(str(s.data[oid.lstrip(".")][1]))
+                sys.exit(0)
 
             elif command == "getnext":
                 oid = getline()
                 ni = s.sorted_oids.index(oid.lstrip(".")) + 1
-                output("." + str(s.sorted_oids[ni]))
-                output(str(s.data[s.sorted_oids[ni]][0]))
-                output(str(s.data[s.sorted_oids[ni]][1]))
+                if ni >= len(s.sorted_oids) - 1:
+                    sys.exit(0)
+                else:
+                    output("." + str(s.sorted_oids[ni]))
+                    output(str(s.data[s.sorted_oids[ni]][0]))
+                    output(str(s.data[s.sorted_oids[ni]][1]))
 
             else:
                 pass
                 logging.error("Unknown command: %s" % command)
+                sys.exit(0)
 
     # If we get an exception, spit it out to the log then quit
     # (by propagating exception).
