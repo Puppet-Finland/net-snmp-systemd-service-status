@@ -54,7 +54,7 @@ class SystemdServiceStatus:
                if service_status == 'running':
                    service_status = 0
                else:
-                   service_status = 1
+                   service_status = 2
 
                service_oid = self.create_oid(service_name)
 
