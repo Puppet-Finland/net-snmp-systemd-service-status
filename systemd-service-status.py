@@ -35,7 +35,7 @@ class SystemdServiceStatus:
         # Temporary data structure used to create sorted oid list later
         oids = [self.oid_prefix]
 
-        lines = subprocess.check_output(["/bin/systemctl", "list-units", "-a", "-t", "service", "--no-legend"]).decode("UTF-8").split("\n")
+        lines = subprocess.check_output(["/bin/systemctl", "list-units", "-a", "-t", "service", "--no-legend", "--plain"]).decode("UTF-8").split("\n")
 
         for line in lines:
             # Filter out systemd services that are service instance "templates" and
@@ -47,7 +47,7 @@ class SystemdServiceStatus:
                #
                # Regular expression can be easily tested online, e.g. here: https://pythex.org
                #
-               result = re.search(r"^(.+)\.service\s+[\w|-]+\s+\w+\s+(\w+)\s+.*$", line)
+               result = re.search(r"^(.+)\.service\s+[\w|-]+\s+\w+\s+([\w|-]+)\s+.*$", line)
                service_name = result.group(1)
                service_status = result.group(2)
 
